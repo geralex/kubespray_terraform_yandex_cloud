@@ -112,6 +112,9 @@ resource "yandex_compute_instance_group" "k8s-masters" {
     # Имя виртуальных машин, создаваемых Instance Groups
     name = "master-{instance.index}"
 
+    # Тип процессора Intel Ice Lake
+    platform_id = "standard-v3"
+	
     # Ресурсы, которые будут выделены для создания виртуальных машин в Instance Groups
     resources {
       cores  = 2
@@ -186,7 +189,8 @@ resource "yandex_compute_instance_group" "k8s-workers" {
   instance_template {
 
     name = "worker-{instance.index}"
-
+    platform_id = "standard-v3"
+	
     resources {
       cores  = 2
       memory = 2
@@ -263,6 +267,7 @@ resource "yandex_compute_instance_group" "k8s-ingresses" {
   instance_template {
 
     name = "ingress-{instance.index}"
+    platform_id = "standard-v3"
 
     resources {
       cores  = 2
@@ -349,15 +354,15 @@ resource "yandex_lb_network_load_balancer" "k8s-load-balancer" {
 
 # Backet for storing cluster backups
 
-#resource "yandex_storage_bucket" "backup-backet-apatsev" {
-#  bucket = "backup-backet-apatsev"
-#  force_destroy = true
-#  access_key = yandex_iam_service_account_static_access_key.static-access-key.access_key
-#  secret_key = yandex_iam_service_account_static_access_key.static-access-key.secret_key
-#  depends_on = [
-#    yandex_iam_service_account_static_access_key.static-access-key
-#  ]
-#}
+resource "yandex_storage_bucket" "backup-backet-kintnexus" {
+  bucket = "backup-backet-kintnexus"
+  force_destroy = true
+  access_key = yandex_iam_service_account_static_access_key.static-access-key.access_key
+  secret_key = yandex_iam_service_account_static_access_key.static-access-key.secret_key
+  depends_on = [
+    yandex_iam_service_account_static_access_key.static-access-key
+  ]
+}
 
 # Output values
 
